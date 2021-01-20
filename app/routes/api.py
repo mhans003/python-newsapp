@@ -42,6 +42,31 @@ def signup():
   # Send back the ID of the newly created user.
   return jsonify(id = newUser.id)
 
+# Log an existing user in.
+@bp.route('/users/login', methods=['POST'])
+def login():
+    # Capture user login credentials and current session to communicate with db.
+    data = request.get_json()
+    db = get_db()
+
+    # See if this user exist. Otherwise, send back a 400 error.
+    try: 
+        user = db.query(User).filter(User.email == data['email']).one()
+    except:
+        print(sys.exc_info()[0])
+        return jsonify(message = 'Incorrect Credentials'), 400
+
+    # If this user exists, check password (stored in data dictionary) against stored password of this user.
+    if user.verify_password(data['password']) == False:
+        return jsonify(message = 'Incorrect Credentials'), 400
+
+    # If successful, clear the current session and mark this user as logged in via the session object.
+    session.clear()
+    session['user_id'] = user.id
+    session['loggedIn'] = True
+
+    return jsonify(id = user.id)
+
 # Log a user out.
 @bp.route('/users/logout', methods=['POST'])
 def logout():

@@ -27,3 +27,10 @@ class User(Base):
 
     # Return encrypt version of password.
     return bcrypt.hashpw(password.encode('utf-8'), salt)
+
+  # Check incoming password against decrypted stored password.
+  def verify_password(self, password):
+      return bcrypt.checkpw(
+          password.encode('utf-8'),
+          self.password.encode('utf-8')
+      )
