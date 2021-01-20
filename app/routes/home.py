@@ -1,6 +1,6 @@
 # Blueprint consolidates routes into a single bp object (parent app can register - similar to Express's Router)
 # render_template allows us to send back a template instead of a string.
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session, redirect
 # Import models
 from app.models import Post
 from app.db import get_db
@@ -18,10 +18,11 @@ def index():
       .order_by(Post.created_at.desc())
       .all()
   )
-  # Render homepage with the retrieved posts.
+  # Render homepage with the retrieved posts, as well as whether user is logged in or not.
   return render_template(
     'homepage.html',
-    posts=posts
+    posts=posts,
+    loggedIn=session.get('loggedIn')
   )
 
 # Get login page
@@ -36,8 +37,9 @@ def single(id):
   db = get_db()
   post = db.query(Post).filter(Post.id == id).one()
 
-  # Render single post template, and pass in retrieved post.
+  # Render single post template, and pass in retrieved post and whether user is logged in or not.
   return render_template(
     'single-post.html',
-    post=post
+    post=post,
+    loggedIn=session.get('loggedIn')
   )

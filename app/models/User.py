@@ -23,7 +23,7 @@ class User(Base):
 
   @validates('password')
   def validate_password(self, key, password):
-    assert len(password) > 4
+    assert len(password) > 3
 
     # Return encrypt version of password.
     return bcrypt.hashpw(password.encode('utf-8'), salt)

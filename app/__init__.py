@@ -1,6 +1,6 @@
 from flask import Flask
-# Include home and dashboard routes.
-from app.routes import home, dashboard
+# Include routes.
+from app.routes import home, dashboard, api
 from app.db import init_db
 # Allow us to use template filters (in utils folder).
 from app.utils import filters
@@ -21,6 +21,7 @@ def create_app(test_config=None):
   # Register routes
   app.register_blueprint(home)
   app.register_blueprint(dashboard)
+  app.register_blueprint(api)
 
   # Call imported init_db function to create tables.
   # Due to configuration in init_db, connections won't remain open.
