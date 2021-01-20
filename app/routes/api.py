@@ -6,6 +6,7 @@ import sys
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
+# Create a new user.
 @bp.route('/users', methods=['POST'])
 def signup():
   # Capture the request data sent from client, and get session for DB communication.
@@ -40,3 +41,10 @@ def signup():
 
   # Send back the ID of the newly created user.
   return jsonify(id = newUser.id)
+
+# Log a user out.
+@bp.route('/users/logout', methods=['POST'])
+def logout():
+    # Remove existing session and send back no content code.
+    session.clear()
+    return '', 204
