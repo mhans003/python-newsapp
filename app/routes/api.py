@@ -45,7 +45,7 @@ def signup():
 # Log an existing user in.
 @bp.route('/users/login', methods=['POST'])
 def login():
-    # Capture user login credentials and current session to communicate with db.
+    # Capture request data and current session to communicate with db.
     data = request.get_json()
     db = get_db()
 
@@ -77,6 +77,7 @@ def logout():
 # Post a comment.
 @bp.route('/comments', methods=['POST'])
 def comment():
+    # Capture request data and session to communicate with db.
     data = request.get_json()
     db = get_db()
 
@@ -104,7 +105,7 @@ def comment():
 # Upvote a post.
 @bp.route('/posts/upvote', methods=['PUT'])
 def upvote():
-    # Capture user login credentials and current session to communicate with db.
+    # Capture request data and current session to communicate with db.
     data = request.get_json()
     db = get_db()
 
@@ -131,7 +132,7 @@ def upvote():
 # Create a new post.
 @bp.route('/posts', methods=['POST'])
 def create():
-    # Capture user login credentials and current session to communicate with db.
+    # Capture request data and current session to communicate with db.
     data = request.get_json()
     db = get_db()
 
@@ -159,7 +160,7 @@ def create():
 # Update an existing post.
 @bp.route('/posts/<id>', methods=['PUT'])
 def update(id):
-    # Capture user login credentials and current session to communicate with db.
+    # Capture request data and current session to communicate with db.
     data = request.get_json()
     db = get_db()
 
@@ -178,3 +179,23 @@ def update(id):
         return jsonify(message = 'Failed to update a post.'), 404
 
     return '', 204
+
+# Delete an existing post.
+@bp.route('/posts/<id>', methods=['DELETE'])
+def delete(id):
+    # Capture current session to communicate with db.
+    db = get_db()
+
+    try:
+        # Delete the post from db by retrieving the correct post by id.
+        db.delete(db.query(Post).filter(Post.id == id).one())
+        db.commit()
+    except:
+        print(sys.exc_info()[0])
+
+        # If delete failed, rollback the last db commit to prevent server crashing when deployed.
+        db.rollback()
+        # Send error message back along with server error code.
+        return jsonify(message = 'Failed to delete a post.'), 404
+
+  return '', 204
