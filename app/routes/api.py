@@ -155,3 +155,26 @@ def create():
 
     # If successful, send back the newly created post id.
     return jsonify(id = newPost.id)
+
+# Update an existing post.
+@bp.route('/posts/<id>', methods=['PUT'])
+def update(id):
+    # Capture user login credentials and current session to communicate with db.
+    data = request.get_json()
+    db = get_db()
+
+    try: 
+        # Find the matching post using the passed in id.
+        post = db.query(Post).filter(Post.id == id).one()
+        # Update the retrieved post's title.
+        post.title = data['title']
+        db.commit()
+    except: 
+        print(sys.exc_info()[0])
+
+        # If the edit failed, rollback the last db commit to prevent server crashing when deployed.
+        db.rollback()
+        # Send error message back along with server error code.
+        return jsonify(message = 'Failed to update a post.'), 404
+
+    return '', 204
