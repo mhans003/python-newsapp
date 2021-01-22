@@ -198,4 +198,4 @@ def delete(id):
         # Send error message back along with server error code.
         return jsonify(message = 'Failed to delete a post.'), 404
 
-  return '', 204
+    return '', 204
