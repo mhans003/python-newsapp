@@ -1,0 +1,59 @@
+body {
+  font-family: 'Work Sans', sans-serif !important;
+}
+
+.blue {
+  color: rgba(48, 105, 152, 1) !important;
+}
+
+.light-blue {
+  color: rgba(75, 139, 190, 1) !important;
+}
+
+.yellow {
+  color: rgba(255, 212, 59, 1) !important;
+}
+
+.small-spacing {
+  letter-spacing: 0.2rem;
+}
+
+.font-lightest {
+  font-weight: 100;
+}
+
+.font-lighter {
+  font-weight: 200;
+}
+
+/*Navbar*/
+
+.navbar-brand {
+  font-size: 250%;
+}
+
+.nav-item {
+  font-size: 130%;
+}
+
+#dashboard-link {
+  border-bottom: 1px solid rgba(255, 212, 59, 1);
+}
+
+@media screen and (max-width: 388px) {
+
+  .navbar-brand {
+      margin-left: auto !important; 
+      margin-right: auto !important; 
+      padding-left: auto !important; 
+      padding-right: auto !important; 
+  }
+
+  .navbar-toggler {
+      width: 60%; 
+      margin-left: auto !important; 
+      margin-right: auto !important; 
+      margin-bottom: 5px; 
+  }
+
+}
