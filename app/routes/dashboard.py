@@ -3,12 +3,15 @@ from flask import Blueprint, render_template, session
 # Import models
 from app.models import Post
 from app.db import get_db
+# Import decorator function that protects routes.
+from app.utils.auth import login_required
 
 # Set up dashboard routes
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
-# Get main dashboard page.
+# Get main dashboard page (protect with login_required).
 @bp.route('/')
+@login_required
 def dash():
   # Connect to db, query all posts from the logged in user.
   db = get_db()
@@ -25,8 +28,9 @@ def dash():
     loggedIn=session.get('loggedIn')
   )
 
-# Get single post to edit.
+# Get single post to edit (protect with login_required).
 @bp.route('/edit/<id>')
+@login_required
 def edit(id):
   # Get post by id.
   db = get_db()

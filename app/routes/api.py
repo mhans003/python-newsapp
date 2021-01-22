@@ -3,6 +3,8 @@ from app.models import User, Post, Comment, Vote
 from app.db import get_db
 # Show error messages.
 import sys
+# Import decorator function to protect routes.
+from app.utils.auth import login_required
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -76,6 +78,7 @@ def logout():
 
 # Post a comment.
 @bp.route('/comments', methods=['POST'])
+@login_required
 def comment():
     # Capture request data and session to communicate with db.
     data = request.get_json()
@@ -104,6 +107,7 @@ def comment():
 
 # Upvote a post.
 @bp.route('/posts/upvote', methods=['PUT'])
+@login_required
 def upvote():
     # Capture request data and current session to communicate with db.
     data = request.get_json()
@@ -131,6 +135,7 @@ def upvote():
 
 # Create a new post.
 @bp.route('/posts', methods=['POST'])
+@login_required
 def create():
     # Capture request data and current session to communicate with db.
     data = request.get_json()
@@ -159,6 +164,7 @@ def create():
 
 # Update an existing post.
 @bp.route('/posts/<id>', methods=['PUT'])
+@login_required
 def update(id):
     # Capture request data and current session to communicate with db.
     data = request.get_json()
@@ -182,6 +188,7 @@ def update(id):
 
 # Delete an existing post.
 @bp.route('/posts/<id>', methods=['DELETE'])
+@login_required
 def delete(id):
     # Capture current session to communicate with db.
     db = get_db()
