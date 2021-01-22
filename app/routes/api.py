@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from app.models import User
+from app.models import User, Post, Comment, Vote
 from app.db import get_db
 # Show error messages.
 import sys
@@ -73,3 +73,30 @@ def logout():
     # Remove existing session and send back no content code.
     session.clear()
     return '', 204
+
+# Post a comment.
+@bp.route('/comments', methods=['POST'])
+def comment():
+    data = request.get_json()
+    db = get_db()
+
+    # Try to create the new comment (using passed in data and current user ID from global session object) and add to the database.
+    try:
+        newComment = Comment(
+            comment_text = data['comment_text'],
+            post_id = data['post_id'],
+            user_id = session.get('user_id')
+        )
+
+        db.add(newComment)
+        db.commit()
+    except: 
+        print(sys.exc_info()[0])
+
+        # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
+        db.rollback()
+        # Send error message back along with server error code.
+        return jsonify(message = 'Failed to post comment. Try again.'), 500
+    
+    # If successful, return the newly created comment id.
+    return jsonify(id = newComment.id)
