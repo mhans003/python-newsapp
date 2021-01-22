@@ -100,3 +100,58 @@ def comment():
     
     # If successful, return the newly created comment id.
     return jsonify(id = newComment.id)
+
+# Upvote a post.
+@bp.route('/posts/upvote', methods=['PUT'])
+def upvote():
+    # Capture user login credentials and current session to communicate with db.
+    data = request.get_json()
+    db = get_db()
+
+    try: 
+        # Create new vote object using passed in post id and stored user id.
+        newVote = Vote(
+            post_id = data['post_id'],
+            user_id = session.get('user_id')
+        ) 
+
+        db.add(newVote)
+        db.commit()
+    except: 
+        print(sys.exc_info()[0])
+
+        # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
+        db.rollback()
+        # Send error message back along with server error code.
+        return jsonify(message = 'Failed to upvote. Try again.'), 500
+    
+    # If successful, return.
+    return '', 204
+
+# Create a new post.
+@bp.route('/posts', methods=['POST'])
+def create():
+    # Capture user login credentials and current session to communicate with db.
+    data = request.get_json()
+    db = get_db()
+
+    # Try creating a new post using data sent from client and the session object's user id.
+    try: 
+        newPost = Post(
+            title = data['title'],
+            post_url = data['post_url'],
+            user_id = session.get('user_id')
+        )
+
+        db.add(newPost)
+        db.commit()
+    except:
+        print(sys.exc_info()[0])
+
+        # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
+        db.rollback()
+        # Send error message back along with server error code.
+        return jsonify(message = 'Failed to create new post. Try again.'), 500
+
+    # If successful, send back the newly created post id.
+    return jsonify(id = newPost.id)
