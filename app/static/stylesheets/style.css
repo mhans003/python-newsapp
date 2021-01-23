@@ -30,6 +30,10 @@ body {
   font-weight: 200;
 }
 
+.slightly-larger {
+  font-size: 130%;
+}
+
 .main-heading {
   border-bottom: 1px solid rgba(255, 212, 59, 1);
 }

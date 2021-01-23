@@ -2,23 +2,45 @@
 
 {% block body %}
 <article>
-  <a href="/dashboard"> &larr; Back to dashboard</a>
-  <h2>
-    Edit Post
-  </h2>
-  <form class="edit-post-form">
-    <div>
-      <input name="post-title" type="text" value="{{post.title}}" />
-      <span>({{post.post_url|format_url}})</span>
+  <div class="mt-3 mb-2 text-center text-lighter">
+    <a class="blue" href="/dashboard"> &larr; Back to Dashboard</a>
+  </div>
+  
+  <h1 class="text-center mt-3 mb-0 font-lighter blue main-heading">Edit Post <span>({{post.post_url|format_url}})</span></h1>
+  <div class="gray-background">
+    <div class="container">
+      <form class="edit-post-form py-5 px-0 px-md-5">
+        <div class="form-group">
+          <input class="form-control form-control-lg" name="post-title" type="text" value="{{post.title}}" aria-label="Edit post title" placeholder="Title" maxlength="100"/>
+        </div>
+        <div class="font-lighter mb-3 slightly-larger text-center">
+          <div class="text-muted">
+            {{post.vote_count}} {{post.vote_count|format_plural('point')}}
+          </div>
+          <div>
+            posted <i>{{post.created_at|format_date}}</i>
+            |
+            <a href="/post/{{post.id}}">{{post.comments|length}} {{post.comments|length|format_plural('comment')}}</a>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-block btn-primary">Save post</button>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <button type="button" class="delete-post-btn btn btn-lg btn-block btn-danger">Delete post</button>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </form>
     </div>
-    <div>
-      {{post.vote_count}} {{post.vote_count|format_plural('point')}} by you on {{post.created_at|format_date}}
-      |
-      <a href="/post/{{post.id}}">{{post.comments|length}} {{post.comments|length|format_plural('comment')}}</a>
-    </div>
-    <button type="submit">Save post</button>
-    <button type="button" class="delete-post-btn">Delete post</button>
-  </form>
+  </div>
+  
 </article>
 
 <h1 class="text-center mt-3 mb-0 font-lighter blue main-heading">Comments</h1>
