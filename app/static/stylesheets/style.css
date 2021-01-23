@@ -107,6 +107,24 @@ body {
   font-weight: 300;
 }
 
+@media screen and (max-width: 575px) {
+
+  .comment-heading-container-blue {
+    border-left: none;
+    border-right: none;
+  }
+  
+  .comment-heading-container-yellow {
+    border-left: none;
+    border-right: none;
+  }
+
+  .comment-text {
+    border-right: none;
+  }
+
+}
+
 @media screen and (max-width: 388px) {
 
   .navbar-brand {
