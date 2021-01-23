@@ -26,6 +26,26 @@ body {
   font-weight: 200;
 }
 
+.main-heading {
+  border-bottom: 1px solid rgba(255, 212, 59, 1);
+}
+
+.gray-background {
+  background-color: rgba(247,247,245,1.0);
+}
+
+.btn-primary {
+  background-color: rgba(75, 139, 190, 1) !important;
+  border: 1px solid rgba(75, 139, 190, 1) !important;
+  border: none;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  color: rgba(75, 139, 190, 1) !important;
+  border: 1px solid rgba(75, 139, 190, 1) !important;
+  background-color: #fff !important;
+}
+
 /*Navbar*/
 
 .navbar-brand {
@@ -38,6 +58,12 @@ body {
 
 #dashboard-link {
   border-bottom: 1px solid rgba(255, 212, 59, 1);
+}
+
+/*Dashboard*/
+
+.dashboard-post-list {
+  font-size: 125% !important;
 }
 
 @media screen and (max-width: 388px) {

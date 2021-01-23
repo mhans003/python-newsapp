@@ -1,14 +1,25 @@
-<article class="post">
-  <div class="title">
-    <a href="{{post.post_url}}" target="_blank">{{post.title}}</a>
-    <!--Format URL by passing post URL into format_url function-->
-    <span>({{post.post_url|format_url}})</span>
+<!--Format outputs using template functions-->
+<div class="card mx-3 my-3">
+  <div class="card-header gray-background">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-10">
+          <h3 class="font-lighter"><a href="{{post.post_url}}" target="_blank">{{post.title}} <span><i>({{post.post_url|format_url}})</i></span></a></h3>
+          <h5 class="text-muted">Posted by {{post.user.username}}</h5>
+        </div>
+        <div class="col-sm-2">
+          <a href="/dashboard/edit/{{post.id}}" class="edit-link">
+            <button class="btn btn-primary btn-block fas fa-edit"></button>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="meta">
-    <!--Format vote count depending on plural; Format date.-->
-    {{post.vote_count}} {{post.vote_count|format_plural('point')}} by {{post.user.username}} on {{post.created_at|format_date}}
+  <div class="card-body text-center">
+    {{post.created_at|format_date}}
     |
-    <!--Format comment depending on plural.-->
     <a href="/post/{{post.id}}">{{post.comments|length}} {{post.comments|length|format_plural('comment')}}</a>
+    | 
+    {{post.vote_count}} {{post.vote_count|format_plural('point')}}
   </div>
-</article>
+</div>
