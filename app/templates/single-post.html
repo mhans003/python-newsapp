@@ -4,16 +4,30 @@
 {% include "partials/post-info.html" %}
 
 {% if loggedIn == True %}
-<form class="comment-form">
-  <div>
-    <textarea name="comment-body"></textarea>
+<h1 class="text-center mt-3 mb-0 font-lighter blue main-heading">Comments</h1>
+<div class="gray-background">
+  <div class="container">
+    <form class="comment-form py-5 px-0 px-md-5 mx-md-5">
+      <div class="form-group">
+        <textarea class="form-control form-control-lg" name="comment-body" aria-label="Write comment here"></textarea>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <button type="submit" class="btn btn-lg btn-block btn-primary">Add Comment <i class="fas fa-plus ml-1"></i></button>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <button type="button" class="upvote-btn btn btn-lg btn-block btn-secondary">Upvote <i class="fas fa-check ml-1"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
-
-  <div>
-    <button type="submit">add comment</button>
-    <button type="button" class="upvote-btn">upvote</button>
-  </div>
-</form>
+</div>
 {% endif %}
 
 {% with comments=post.comments %}
