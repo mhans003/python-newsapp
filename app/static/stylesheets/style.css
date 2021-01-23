@@ -37,12 +37,23 @@ body {
 .btn-primary {
   background-color: rgba(75, 139, 190, 1) !important;
   border: 1px solid rgba(75, 139, 190, 1) !important;
-  border: none;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
   color: rgba(75, 139, 190, 1) !important;
   border: 1px solid rgba(75, 139, 190, 1) !important;
+  background-color: #fff !important;
+}
+
+.btn-secondary {
+  color: rgba(48, 105, 152, 1) !important;
+  background-color: rgba(255, 212, 59, 1) !important;
+  border: 1px solid rgba(255, 212, 59, 1) !important;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
+  color: rgba(48, 105, 152, 1) !important;
+  border: 1px solid rgba(255, 212, 59, 1) !important;
   background-color: #fff !important;
 }
 

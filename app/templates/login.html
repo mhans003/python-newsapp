@@ -1,37 +1,43 @@
 {% extends "layout/main.html" %}
 
 {% block body %}
-<form class="login-form">
-  <div>
-    <label for="email-login">email:</label>
-    <input type="text" id="email-login" />
+<h1 class="text-center mt-3 mb-0 font-lighter blue main-heading">Sign In</h1>
+<div class="gray-background">
+  <div class="container">
+    <form class="login-form py-5 px-0 px-md-5">
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="email" id="email-login" aria-label="Enter Email" placeholder="Email" required />
+      </div>
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="password" id="password-login" aria-label="Enter Pasword" placeholder="Password" required />
+      </div>
+      <div class="form-group">
+        <button class="btn btn-lg btn-block btn-primary" type="submit">Sign In <i class="fas fa-sign-in-alt ml-1"></i></button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="password-login">password:</label>
-    <input type="password" id="password-login" />
-  </div>
-  <div>
-    <button type="submit">login</button>
-  </div>
-</form>
+</div>
 
-<form class="signup-form">
-  <div>
-    <label for="username-signup">username:</label>
-    <input type="text" id="username-signup" />
+
+<h1 class="text-center mt-3 mb-0 font-lighter blue main-heading">Create Account</h1>
+<div class="gray-background">
+  <div class="container">
+    <form class="signup-form py-5 px-0 px-md-5">
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="text" id="username-signup" aria-label="Enter Username" placeholder="Username" required/>
+      </div>
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="text" id="email-signup" aria-label="Enter Email" placeholder="Email" required/>
+      </div>
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="password" id="password-signup" aria-label="Enter Password" placeholder="Password" required/>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-lg btn-block btn-secondary" type="submit">Create Account <i class="fas fa-user ml-1"></i></button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="email-signup">email:</label>
-    <input type="text" id="email-signup" />
-  </div>
-  <div>
-    <label for="password-signup">password:</label>
-    <input type="password" id="password-signup" />
-  </div>
-  <div>
-    <button type="submit">signup</button>
-  </div>
-</form>
+</div>
 
 <script src="/javascript/login.js"></script>
 {% endblock %}
