@@ -14,6 +14,10 @@ body {
   color: rgba(255, 212, 59, 1) !important;
 }
 
+.light-yellow {
+  color: rgba(255, 232, 115, 1) !important;
+}
+
 .small-spacing {
   letter-spacing: 0.2rem;
 }
@@ -75,6 +79,32 @@ body {
 
 .dashboard-post-list {
   font-size: 125% !important;
+}
+
+/*Comments*/
+
+.comment-heading {
+  height: 100%;
+}
+
+.comment-heading-container-blue {
+  border: 1px solid rgba(75, 139, 190, 1);
+  background-color: rgba(75, 139, 190, 0.2);
+}
+
+.comment-heading-container-yellow {
+  border: 1px solid rgba(255, 212, 59, 1);
+  background-color: rgba(255, 212, 59, 0.2);
+}
+
+.comment-text {
+  border-top: 1px solid rgba(210,210,210,1.0);
+  border-right: 1px solid rgba(210,210,210,1.0);
+  border-bottom: 1px solid rgba(210,210,210,1.0);
+}
+
+.comment-main-heading {
+  font-weight: 300;
 }
 
 @media screen and (max-width: 388px) {

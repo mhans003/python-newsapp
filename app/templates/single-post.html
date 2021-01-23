@@ -9,7 +9,7 @@
   <div class="container">
     <form class="comment-form py-5 px-0 px-md-5 mx-md-5">
       <div class="form-group">
-        <textarea class="form-control form-control-lg" name="comment-body" aria-label="Write comment here"></textarea>
+        <textarea class="form-control form-control-lg" name="comment-body" aria-label="Write comment here" maxlength="255"></textarea>
       </div>
       <div class="container">
         <div class="row">
@@ -37,6 +37,7 @@
 {% if loggedIn == True %}
 <script src="/javascript/comment.js"></script>
 <script src="/javascript/upvote.js"></script>
+<script src="/javascript/comment-background.js"></script>
 {% endif %}
 
 {% endblock %}
