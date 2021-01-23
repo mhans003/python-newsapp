@@ -1,6 +1,7 @@
 {% extends "layout/main.html" %}
 
 {% block body %}
+<h1 class="text-center mt-3 mb-5 font-lighter blue main-heading">Posts</h1>
 <div class="post-list">
   {% for post in posts %}
     {% include "partials/post-info.html" %}
