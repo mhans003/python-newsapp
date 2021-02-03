@@ -6,7 +6,7 @@ async function forgotFormhandler(event) {
   
     //If there is an email entered, send the credentials.
     if (email) {
-      const response = await fetch('/api/users/forgot', {
+      const response = await fetch('/email/forgot', {
         method: 'post',
         body: JSON.stringify({
           email
