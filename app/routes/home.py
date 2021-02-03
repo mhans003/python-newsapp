@@ -34,6 +34,15 @@ def login():
   # Otherwise, redirect to user dashboard.
   return redirect('/dashboard')
 
+# Get forgot password page
+@bp.route('/forgot')
+def forgot():
+  # If a user is logged in, redirect to dashboard.
+  if session.get('loggedIn') is not None:
+    return redirect('/dashboard')
+  # Otherwise, redirect to forgot password page.
+  return render_template('forgot.html')
+
 # Get single post.
 @bp.route('/post/<id>')
 def single(id):
