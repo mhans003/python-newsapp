@@ -7,3 +7,6 @@ from .dashboard import bp as dashboard
 # Import API routes.
 from .api import bp as api 
 
+# Import Email Routes
+from .email import bp as email
+
