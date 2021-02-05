@@ -1,15 +1,18 @@
-async function forgotFormHandler(event) {
+async function resetFormHandler(event) {
     event.preventDefault();
   
     //Get the password from the user's input.
-    const email = document.querySelector('#forgot-email').value.trim();
+    const password = document.querySelector('#reset-password').value.trim();
+    const confirmPassword = document.querySelector('#confirm-password').value.trim();
   
-    //If there is an email entered, send the credentials.
-    if (email) {
-      const response = await fetch('/forgot', {
+    //If two passwords match, submit form.
+    if (password === confirmPassword) {
+
+      //RESET WITH TOKEN
+      const response = await fetch('/reset', {
         method: 'post',
         body: JSON.stringify({
-          email
+          password
         }),
         headers: { 'Content-Type': 'application/json' }
       });
@@ -21,8 +24,11 @@ async function forgotFormHandler(event) {
       } else {
         alert("Email not found. Try refreshing the page or entering another email address.");
       }
+    } else {
+        alert("Passwords do not match.");
     }
 }
   
 //Add these handlers to the login/sign up forms
-document.querySelector('.forgot-form').addEventListener('submit', forgotFormHandler);
+document.querySelector('.reset-form').addEventListener('submit', resetFormHandler);
+  

@@ -1,0 +1,24 @@
+{% extends "layout/main.html" %}
+
+{% block body %}
+<h1 class="text-center mt-3 mb-0 font-lighter blue main-heading">Reset Password</h1>
+<div class="gray-background">
+  <div class="container">
+    <form class="reset-form py-5 px-0 px-md-5">
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="password" id="reset-password" aria-label="New Password" placeholder="New Password" required/>
+      </div>
+      <div class="form-group">
+        <input class="form-control form-control-lg" type="password" id="confirm-password" aria-label="Confirm Password" placeholder="Confirm Password" required/>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-lg btn-block btn-primary" type="submit" id="submit-button">
+            Submit <i class="fas fa-sign-in-alt ml-1"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--<script src="/javascript/reset.js"></script>-->
+{% endblock %}
