@@ -1,6 +1,6 @@
 # Blueprint consolidates routes into a single bp object (parent app can register - similar to Express's Router)
 # render_template allows us to send back a template instead of a string.
-from flask import Flask, Blueprint, current_app, request, jsonify, render_template, session, redirect
+from flask import Flask, Blueprint, current_app, request, jsonify, render_template, session, redirect, url_for
 # Import models
 from app.models import Post, User
 from app.db import get_db
@@ -47,39 +47,53 @@ def forgot():
   # Otherwise, redirect to forgot password page.
   return render_template('forgot.html')
 
+# Send email to verified user to resent password.
+def send_reset_email(user, email_address):
+  token = user.get_reset_token()
+
+  # Configure flask mail if a user email is found.
+  current_app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+  current_app.config['MAIL_PORT'] = 465
+  current_app.config['MAIL_USE_SSL'] = True
+  current_app.config['MAIL_USERNAME'] = getenv('EMAIL_ADDRESS')
+  current_app.config['MAIL_PASSWORD'] = getenv('EMAIL_PASSWORD')
+
+  # Use the current app instance to create instance of Mail object.
+  mail= Mail(current_app)
+
+  # Configure email message. 
+  msg = Message()
+  msg.subject = "Password Reset Link - Python News App"
+  msg.recipients = [email_address]
+  msg.sender = getenv('EMAIL_ADDRESS')
+  msg.body = f'''You submitted a request to reset your password. Temp Link:
+  {url_for('home.reset_token', token=token, _external=True)}'''
+  mail.send(msg)
+
+@bp.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+  #For now, redirect:
+  return redirect('/')
+
+
 @bp.route('/forgot', methods=['POST'])
 def forgotPasswordEmail():
-    print('in forgot route')
-    # Capture the request data sent from client, and get session for DB communication.
-    data = request.get_json()
-    db = get_db()
+  print('in forgot route')
+  # Capture the request data sent from client, and get session for DB communication.
+  data = request.get_json()
+  db = get_db()
 
-    # See if this user email exists. Otherwise, send back a 400 error.
-    try: 
-        user = db.query(User).filter(User.email == data['email']).one()
-    except:
-        print(sys.exc_info()[0])
-        return jsonify(message = 'Incorrect Credentials'), 400
+  # See if this user email exists. Otherwise, send back a 400 error.
+  try: 
+      user = db.query(User).filter(User.email == data['email']).one()
+  except:
+      print(sys.exc_info()[0])
+      return jsonify(message = 'Incorrect Credentials'), 400
 
-    # Configure flask mail.
-    current_app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    current_app.config['MAIL_PORT'] = 465
-    current_app.config['MAIL_USE_SSL'] = True
-    current_app.config['MAIL_USERNAME'] = getenv('EMAIL_ADDRESS')
-    current_app.config['MAIL_PASSWORD'] = getenv('EMAIL_PASSWORD')
+  # If successful, call send_reset_email with found user and email passed in.
+  send_reset_email(user, data['email'])
 
-    # Use the current app instance to create instance of Mail object.
-    mail= Mail(current_app)
-
-    # Configure email message. 
-    msg = Message()
-    msg.subject = "Password Reset Link - Python News App"
-    msg.recipients = [data['email']]
-    msg.sender = getenv('EMAIL_ADDRESS')
-    msg.body = 'You have requested to reset your password.'
-    mail.send(msg)
-
-    return jsonify(email = user.email)
+  return jsonify(email = user.email)
 
 # Get single post.
 @bp.route('/post/<id>')
