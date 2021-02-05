@@ -72,9 +72,17 @@ def send_reset_email(user, email_address):
 
 @bp.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-  #For now, redirect:
-  return redirect('/')
-
+  # If the user is currently logged in, redirect to dashboard.
+  if session.get('loggedIn') is not None:
+    return redirect('/dashboard')
+  # Otherwise, verify this token.
+  user = User.verify_reset_token(token)
+  if user is None:
+    # If not validated, return to forgot.html.
+    print('Invalid or expired token')
+    return redirect(url_for('home.forgot'))
+  # If successful, render the reset.html page to change password.
+  return render_template('reset.html')
 
 @bp.route('/forgot', methods=['POST'])
 def forgotPasswordEmail():

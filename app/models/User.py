@@ -1,4 +1,4 @@
-from app.db import Base
+from app.db import Base, get_db
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import validates
 import bcrypt
@@ -32,7 +32,8 @@ class User(Base):
     except: 
       return None
     # If successful, get the user using the user id returned.
-    return User.query.get(user_id)
+    db = get_db()
+    return db.query(User).get(user_id)
 
   @validates('email')
   def validate_email(self, key, email):
