@@ -7,9 +7,8 @@ async function resetFormHandler(event) {
   
     //If two passwords match, submit form.
     if (password === confirmPassword) {
-
       //RESET WITH TOKEN
-      const response = await fetch('/reset', {
+      const response = await fetch(`${window.location.pathname}`, {
         method: 'post',
         body: JSON.stringify({
           password
@@ -17,12 +16,11 @@ async function resetFormHandler(event) {
         headers: { 'Content-Type': 'application/json' }
       });
   
-      //Then, redirect to the user's dashboard or notify of error.
+      //Then, notify user of success or failure.
       if (response.ok) {
-        //document.location.replace('/dashboard/');
-        alert(`Email sent to ${email}. Check your inbox.`);
+        alert(`Password successfully changed`);
       } else {
-        alert("Email not found. Try refreshing the page or entering another email address.");
+        alert(`Something went wrong when changing passwords.`);
       }
     } else {
         alert("Passwords do not match.");

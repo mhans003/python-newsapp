@@ -70,7 +70,7 @@ def send_reset_email(user, email_address):
   {url_for('home.reset_token', token=token, _external=True)}'''
   mail.send(msg)
 
-@bp.route("/reset_password/<token>", methods=['GET', 'POST'])
+@bp.route("/reset_password/<token>", methods=['GET'])
 def reset_token(token):
   # If the user is currently logged in, redirect to dashboard.
   if session.get('loggedIn') is not None:
@@ -83,6 +83,29 @@ def reset_token(token):
     return redirect(url_for('home.forgot'))
   # If successful, render the reset.html page to change password.
   return render_template('reset.html')
+
+@bp.route("/reset_password/<token>", methods=['POST'])
+def reset_password(token):
+  print('inside of reset password function with token ' + token)
+  user = User.verify_reset_token(token)
+  if user is None:
+    # If not validated, return to forgot.html.
+    print('Invalid or expired token')
+    return redirect(url_for('home.forgot'))
+  # If successful, change the password.
+  data = request.get_json()
+  db = get_db()
+
+  try: 
+    # Attempt to change the user's password.
+    user.password = data['password']
+    db.commit()
+  except: 
+    print(sys.exc_info()[0])
+    # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
+    db.rollback()
+    return jsonify(message = 'Failed to post comment. Try again.'), 500
+  return jsonify(message = 'Successfully changed password')
 
 @bp.route('/forgot', methods=['POST'])
 def forgotPasswordEmail():
