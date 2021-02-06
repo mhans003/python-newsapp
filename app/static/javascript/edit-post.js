@@ -7,7 +7,7 @@ async function editFormHandler(event) {
     window.location.toString().split('/').length - 1
   ];
   //Send the ID via URL params and the title via request body.
-  const response = await fetch(`/api/posts/${id}`, {
+  await fetch(`/api/posts/${id}`, {
     method: 'PUT',
     body: JSON.stringify({
       title
@@ -15,14 +15,22 @@ async function editFormHandler(event) {
     headers: {
       'Content-Type': 'application/json'
     }
+  })
+  .then(response => {
+    if (response.ok) {
+      document.location.replace('/dashboard/');
+    } else {
+      //If the response is not OK, reload in order to view flash error message.
+      document.location.reload();
+    }
+    return response.text();
+  })
+  .then(text => {
+    console.log(JSON.parse(text));
+  })
+  .catch(error => {
+    console.log(error);
   });
-
-  //Then, redirect to dashboard or notify of error.
-  if (response.ok) {
-    document.location.replace('/dashboard/');
-  } else {
-    alert(response.statusText);
-  }
 }
 
 //Add the form to edit a post to the edit post form.

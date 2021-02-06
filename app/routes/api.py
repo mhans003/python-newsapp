@@ -189,9 +189,11 @@ def update(id):
         # If the edit failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
-        return jsonify(message = 'Failed to update a post.'), 404
+        flash('Failed to update post. Refresh and try again.', 'error')
+        return jsonify('Failed to update a post.'), 404
 
-    return '', 204
+    flash('Post updated!', 'info')
+    return jsonify('Post updated!'), 204
 
 # Delete an existing post.
 @bp.route('/posts/<id>', methods=['DELETE'])
