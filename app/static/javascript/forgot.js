@@ -6,21 +6,24 @@ async function forgotFormHandler(event) {
   
     //If there is an email entered, send the credentials.
     if (email) {
-      const response = await fetch('/forgot', {
+      await fetch('/forgot', {
         method: 'post',
         body: JSON.stringify({
           email
         }),
         headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => {
+        //Reload in order to view flash message.
+        document.location.reload();
+        return response.text();
+      })
+      .then(text => {
+        console.log(JSON.parse(text));
+      })
+      .catch(error => {
+        console.log(error);
       });
-  
-      //Then, redirect to the user's dashboard or notify of error.
-      if (response.ok) {
-        //document.location.replace('/dashboard/');
-        alert(`Email sent to ${email}. Check your inbox.`);
-      } else {
-        alert("Email not found. Try refreshing the page or entering another email address.");
-      }
     }
 }
   

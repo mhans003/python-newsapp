@@ -8,26 +8,32 @@ async function resetFormHandler(event) {
     //If two passwords match, submit form.
     if (password === confirmPassword) {
       //RESET WITH TOKEN
-      const response = await fetch(`${window.location.pathname}`, {
+      await fetch(`${window.location.pathname}`, {
         method: 'post',
         body: JSON.stringify({
           password
         }),
         headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => {
+        if (response.ok) {
+          document.location.replace('/');
+        } else {
+          //If the response is not OK, reload in order to view flash error message.
+          document.location.reload();
+        }
+        return response.text();
+      })
+      .then(text => {
+        console.log(JSON.parse(text));
+      })
+      .catch(error => {
+        console.log(error);
       });
-  
-      //Then, notify user of success or failure of password change.
-      if (response.ok) {
-        console.log(response);
-        alert(`Password successfully changed`);
-      } else {
-        alert(`Something went wrong when changing passwords.`);
-      }
     } else {
-        alert("Passwords do not match.");
+      alert('Those passwords do not match.');
     }
 }
   
 //Add these handlers to the login/sign up forms
 document.querySelector('.reset-form').addEventListener('submit', resetFormHandler);
-  

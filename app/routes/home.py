@@ -1,6 +1,6 @@
 # Blueprint consolidates routes into a single bp object (parent app can register - similar to Express's Router)
 # render_template allows us to send back a template instead of a string.
-from flask import Flask, Blueprint, current_app, request, jsonify, render_template, session, redirect, url_for
+from flask import Flask, Blueprint, current_app, request, jsonify, render_template, session, redirect, url_for, flash
 # Import models
 from app.models import Post, User
 from app.db import get_db
@@ -104,8 +104,10 @@ def reset_password(token):
     print(sys.exc_info()[0])
     # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
     db.rollback()
-    return jsonify(message = 'Failed to post comment. Try again.'), 500
-  return jsonify(message = 'Successfully changed password')
+    flash('Failed to change password. Try again.', 'danger')
+    return jsonify('Failed to change password. Try again.'), 500
+  flash('Successfully changed password', 'info')
+  return jsonify('Successfully changed password')
 
 @bp.route('/forgot', methods=['POST'])
 def forgotPasswordEmail():
@@ -119,12 +121,14 @@ def forgotPasswordEmail():
       user = db.query(User).filter(User.email == data['email']).one()
   except:
       print(sys.exc_info()[0])
-      return jsonify(message = 'Incorrect Credentials'), 400
+      flash('Those credentials are not recognized.', 'danger')
+      return jsonify('Incorrect Credentials'), 400
 
   # If successful, call send_reset_email with found user and email passed in.
   send_reset_email(user, data['email'])
 
-  return jsonify(email = user.email)
+  flash('An email has been sent. Check your inbox.', 'info')
+  return jsonify('Email sent to address.')
 
 # Get single post.
 @bp.route('/post/<id>')
