@@ -5,16 +5,24 @@ async function deleteFormHandler(event) {
   const id = window.location.toString().split('/')[
     window.location.toString().split('/').length - 1
   ];
-  const response = await fetch(`/api/posts/${id}`, {
+  await fetch(`/api/posts/${id}`, {
     method: 'DELETE'
+  })
+  .then(response => {
+    if (response.ok) {
+      document.location.replace('/dashboard/');
+    } else {
+      //If the response is not OK, reload in order to view flash error message.
+      document.location.reload();
+    }
+    return response.text();
+  })
+  .then(text => {
+    console.log(JSON.parse(text));
+  })
+  .catch(error => {
+    console.log(error);
   });
-
-  //Then, redirect to the dashboard or notify of error.
-  if (response.ok) {
-    document.location.replace('/dashboard/');
-  } else {
-    alert(response.statusText);
-  }
 }
 
 //Add this handler to the delete post button.

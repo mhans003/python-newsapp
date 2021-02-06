@@ -189,7 +189,7 @@ def update(id):
         # If the edit failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
-        flash('Failed to update post. Refresh and try again.', 'error')
+        flash('Failed to update post. Refresh and try again.', 'danger')
         return jsonify('Failed to update a post.'), 404
 
     flash('Post updated!', 'info')
@@ -212,6 +212,8 @@ def delete(id):
         # If delete failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
-        return jsonify(message = 'Failed to delete a post.'), 404
+        flash('Failed to delete post. Refresh and try again.', 'danger')
+        return jsonify('Failed to delete a post.'), 404
 
-    return '', 204
+    flash('Post deleted!', 'info')
+    return jsonify('Post deleted!'), 204
