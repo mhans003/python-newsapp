@@ -164,10 +164,12 @@ def create():
         # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
-        return jsonify(message = 'Failed to create new post. Try again.'), 500
+        flash('Failed to create new post. Try again.', 'danger')
+        return jsonify('Failed to create new post. Try again.'), 500
 
     # If successful, send back the newly created post id.
-    return jsonify(id = newPost.id)
+    flash('New post created!', 'info')
+    return jsonify('New post created!')
 
 # Update an existing post.
 @bp.route('/posts/<id>', methods=['PUT'])

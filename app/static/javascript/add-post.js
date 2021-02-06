@@ -6,7 +6,7 @@ async function newFormHandler(event) {
   const post_url = document.querySelector('input[name="post-url"]').value;
 
   //Using data, send request to post.
-  const response = await fetch(`/api/posts`, {
+  await fetch(`/api/posts`, {
     method: 'POST',
     body: JSON.stringify({
       title,
@@ -15,15 +15,22 @@ async function newFormHandler(event) {
     headers: {
       'Content-Type': 'application/json'
     }
+  })
+  .then(response => {
+    if (response.ok) {
+      document.location.replace('/dashboard');
+    } else {
+      //If the response is not OK, reload in order to view flash error message.
+      document.location.reload();
+    }
+    return response.text();
+  })
+  .then(text => {
+    console.log(JSON.parse(text));
+  })
+  .catch(error => {
+    console.log(error);
   });
-
-  //Then, redirect to the dashobard, or notify of error.
-  if (response.ok) {
-    document.location.replace('/dashboard');
-  } else {
-    alert(response.statusText);
-    console.log(response.message);
-  }
 }
 
 //Add this function to the new post form.
