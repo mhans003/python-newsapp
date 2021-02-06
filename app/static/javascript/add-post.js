@@ -22,6 +22,7 @@ async function newFormHandler(event) {
     document.location.replace('/dashboard');
   } else {
     alert(response.statusText);
+    console.log(response.message);
   }
 }
 

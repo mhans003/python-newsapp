@@ -7,21 +7,26 @@ async function loginFormHandler(event) {
 
   //If there is an email and password are entered, send the credentials.
   if (email && password) {
-    const response = await fetch('/api/users/login', {
+    await fetch('/api/users/login', {
       method: 'post',
       body: JSON.stringify({
         email,
         password
       }),
       headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+      if(response.ok) {
+        document.location.replace('/dashboard/');
+      } 
+      return response.text();
+    })
+    .then(text => {
+      alert(JSON.parse(text));
+    })
+    .catch(error => {
+      alert(error);
     });
-
-    //Then, redirect to the user's dashboard or notify of error.
-    if (response.ok) {
-      document.location.replace('/dashboard/');
-    } else {
-      alert(response.statusText);
-    }
   }
 }
 
@@ -35,7 +40,7 @@ async function signupFormHandler(event) {
 
   //As long as there are values to send, send over the new user's credentials.
   if (username && email && password) {
-    const response = await fetch('/api/users', {
+    await fetch('/api/users', {
       method: 'post',
       body: JSON.stringify({
         username,
@@ -43,14 +48,19 @@ async function signupFormHandler(event) {
         password
       }),
       headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok) {
+        document.location.replace('/dashboard/');
+      }
+      return response.text();
+    })
+    .then(text => {
+      alert(JSON.parse(text));
+    })
+    .catch(error => {
+      alert(error);
     });
-
-    //Then, redirect to dashboard or notify of error.
-    if (response.ok) {
-      document.location.replace('/dashboard/');
-    } else {
-      alert(response.statusText);
-    }
   }
 }
 

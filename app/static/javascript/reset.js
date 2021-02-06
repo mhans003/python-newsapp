@@ -16,8 +16,9 @@ async function resetFormHandler(event) {
         headers: { 'Content-Type': 'application/json' }
       });
   
-      //Then, notify user of success or failure.
+      //Then, notify user of success or failure of password change.
       if (response.ok) {
+        console.log(response);
         alert(`Password successfully changed`);
       } else {
         alert(`Something went wrong when changing passwords.`);

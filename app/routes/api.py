@@ -34,7 +34,7 @@ def signup():
       # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
       db.rollback()
       # Send error message back along with server error code.
-      return jsonify(message = 'Something went wrong. Refresh and try again.'), 500
+      return jsonify('Something went wrong. Refresh and try again.'), 500
   
   # Clear any existing session and add two properties to global session object for session persistence.
   session.clear()
@@ -42,7 +42,7 @@ def signup():
   session['loggedIn'] = True
 
   # Send back the ID of the newly created user.
-  return jsonify(id = newUser.id)
+  return jsonify('Successfully created a new user.')
 
 # Log an existing user in.
 @bp.route('/users/login', methods=['POST'])
@@ -56,18 +56,18 @@ def login():
         user = db.query(User).filter(User.email == data['email']).one()
     except:
         print(sys.exc_info()[0])
-        return jsonify(message = 'Incorrect Credentials'), 400
+        return jsonify('Incorrect Credentials'), 400
 
     # If this user exists, check password (stored in data dictionary) against stored password of this user.
     if user.verify_password(data['password']) == False:
-        return jsonify(message = 'Incorrect Credentials'), 400
+        return jsonify('Incorrect Credentials'), 400
 
     # If successful, clear the current session and mark this user as logged in via the session object.
     session.clear()
     session['user_id'] = user.id
     session['loggedIn'] = True
 
-    return jsonify(id = user.id)
+    return jsonify('Successfully signed in.')
 
 # Log a user out.
 @bp.route('/users/logout', methods=['POST'])
@@ -100,10 +100,10 @@ def comment():
         # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
-        return jsonify(message = 'Failed to post comment. Try again.'), 500
+        return jsonify('Failed to post comment. Try again.'), 500
     
     # If successful, return the newly created comment id.
-    return jsonify(id = newComment.id)
+    return jsonify('New comment posted.')
 
 # Upvote a post.
 @bp.route('/posts/upvote', methods=['PUT'])
@@ -128,7 +128,7 @@ def upvote():
         # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
-        return jsonify(message = 'Failed to upvote. Try again.'), 500
+        return '', 500
     
     # If successful, return.
     return '', 204

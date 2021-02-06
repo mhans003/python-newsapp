@@ -9,7 +9,7 @@ async function commentFormHandler(event) {
 
   //As long as there is a comment to send, send the request.
   if (comment_text) {
-    const response = await fetch('/api/comments', {
+    await fetch('/api/comments', {
       method: 'POST',
       body: JSON.stringify({
         post_id,
@@ -18,14 +18,19 @@ async function commentFormHandler(event) {
       headers: {
         'Content-Type': 'application/json'
       }
+    })
+    .then(response => {
+      if (response.ok) {
+        document.location.reload();
+      } 
+      return response.text();
+    })
+    .then(text => {
+      alert(JSON.parse(text));
+    })
+    .catch(error => {
+      alert(error);
     });
-
-    //Then, reload the page, or alert of error.
-    if (response.ok) {
-      document.location.reload();
-    } else {
-      alert(response.statusText);
-    }
   }
 }
 
