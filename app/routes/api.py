@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, flash
 from app.models import User, Post, Comment, Vote
 from app.db import get_db
 # Show error messages.
@@ -34,6 +34,7 @@ def signup():
       # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
       db.rollback()
       # Send error message back along with server error code.
+      flash('Something went wrong. Refresh and try again.', 'danger')
       return jsonify('Something went wrong. Refresh and try again.'), 500
   
   # Clear any existing session and add two properties to global session object for session persistence.
@@ -41,8 +42,8 @@ def signup():
   session['user_id'] = newUser.id
   session['loggedIn'] = True
 
-  # Send back the ID of the newly created user.
-  return jsonify('Successfully created a new user.')
+  flash('Successfully created new user.', 'info')
+  return jsonify('Successfully created new user.')
 
 # Log an existing user in.
 @bp.route('/users/login', methods=['POST'])
@@ -56,10 +57,12 @@ def login():
         user = db.query(User).filter(User.email == data['email']).one()
     except:
         print(sys.exc_info()[0])
+        flash('Incorrect credentials. Try again.', 'danger')
         return jsonify('Incorrect Credentials'), 400
 
     # If this user exists, check password (stored in data dictionary) against stored password of this user.
     if user.verify_password(data['password']) == False:
+        flash('Incorrect credentials. Try again.', 'danger')
         return jsonify('Incorrect Credentials'), 400
 
     # If successful, clear the current session and mark this user as logged in via the session object.
@@ -67,13 +70,15 @@ def login():
     session['user_id'] = user.id
     session['loggedIn'] = True
 
-    return jsonify('Successfully signed in.')
+    flash('Successfully signed in!', 'info')
+    return jsonify('Successfully signed in')
 
 # Log a user out.
 @bp.route('/users/logout', methods=['POST'])
 def logout():
     # Remove existing session and send back no content code.
     session.clear()
+    flash('You have been logged out.', 'warning')
     return '', 204
 
 # Post a comment.
@@ -100,9 +105,11 @@ def comment():
         # If the insertion failed, rollback the last db commit to prevent server crashing when deployed.
         db.rollback()
         # Send error message back along with server error code.
+        flash('Failed to post new comment. Try again.', 'danger')
         return jsonify('Failed to post comment. Try again.'), 500
     
     # If successful, return the newly created comment id.
+    flash('New comment posted!', 'info')
     return jsonify('New comment posted.')
 
 # Upvote a post.

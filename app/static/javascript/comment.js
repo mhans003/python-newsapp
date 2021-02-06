@@ -20,16 +20,16 @@ async function commentFormHandler(event) {
       }
     })
     .then(response => {
-      if (response.ok) {
+      //if (response.ok) {
         document.location.reload();
-      } 
+      //} 
       return response.text();
     })
     .then(text => {
-      alert(JSON.parse(text));
+      console.log(JSON.parse(text));
     })
     .catch(error => {
-      alert(error);
+      console.log(error);
     });
   }
 }
