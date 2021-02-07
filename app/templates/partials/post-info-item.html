@@ -1,0 +1,20 @@
+<!--Format outputs using template functions-->
+<div class="card mx-3 my-3">
+    <div class="card-header gray-background">
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="font-lighter"><a href="{{post.post_url}}" target="_blank">{{post.title}} <span><i>({{post.post_url|format_url}})</i></span></a></h3>
+            <h5 class="text-muted">Posted by {{post.user.username}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body text-center">
+      {{post.created_at|format_date}}
+      |
+      {{post.comments|length}} {{post.comments|length|format_plural('comment')}}
+      | 
+      {{post.vote_count}} {{post.vote_count|format_plural('point')}}
+    </div>
+  </div>

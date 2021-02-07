@@ -1,0 +1,25 @@
+<!--Format outputs using template functions-->
+<div class="card mx-3 my-3">
+    <div class="card-header gray-background">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-10">
+            <h3 class="font-lighter"><a href="{{post.post_url}}" target="_blank">{{post.title}} <span><i>({{post.post_url|format_url}})</i></span></a></h3>
+            <h5 class="text-muted">Posted by {{post.user.username}}</h5>
+          </div>
+          <div class="col-sm-2">
+            <a href="/post/{{post.id}}" class="edit-link">
+              <button class="btn btn-primary btn-block fas fa-info-circle"></button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body text-center">
+      {{post.created_at|format_date}}
+      |
+      {{post.comments|length}} {{post.comments|length|format_plural('comment')}}
+      | 
+      {{post.vote_count}} {{post.vote_count|format_plural('point')}}
+    </div>
+  </div>
